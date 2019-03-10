@@ -14,7 +14,7 @@ module.exports = NodeHelper.create({
 		console.log("Notification: " + notification + " Payload: " + payload);
 
 		if(notification === "GET_SOLAR") {
-			var enlightenUrl = payload.config.url + payload.config.systemId + "/summary?&key=" + payload.config.apiKey + "&user_id=" + payload.config.userId;
+			var enlightenUrl = payload.config.url + "site/" + payload.config.siteId + "/overview.jason?&api_key=" + payload.config.apiKey;
 			request(enlightenUrl, function (error, response, body) {
 				if (!error && response.statusCode == 200) {
 					var jsonData = JSON.parse(body);

@@ -2,30 +2,32 @@
 * Magic Mirror module for displaying SolarEdge data
 * By Rex Markesteijn
 * MIT Licensed
+
+Updated for newer Solaredge API
+* Chris Weiss 2019-03
 */
 
 Module.register("MMM-SolarEdge",{
     // Default module config.
     defaults: {
-        url: "https://api.enphaseenergy.com/api/v2/systems/",
+        url: "https://monitoringapi.solaredge.com/",
         apiKey: "", //Enter API key
-        userId: "4d7a45774e6a41320a", //Sample user ID
-	      systemId: "67", //Sample system
-	      refInterval: 1000 * 60 * 5, //5 minutes
+        siteId: "", //site id
+	    refInterval: 1000 * 60 * 10, //10 minutes
         basicHeader: false,
     },
 
     start: function() {
         Log.info("Starting module: " + this.name);
 
-        this.titles = ["Current Power:", "Daily Energy:", "Lifetime Energy:", "Active Inverters: ", "Current Status:"];
-	      this.suffixes = ["Watts", "kWh", "MWh", "", ""];
+        this.titles = ["Current Power:", "Daily Energy:", "Montly Energy:", "Yearly Energy:", "Lifetime Energy:"];
+	      this.suffixes = ["Watts", "kWh", "kWh", "MWh", "MWh"];
 	      this.results = ["Loading", "Loading", "Loading", "Loading", "Loading"];
         this.loaded = false;
         this.getSolarData();
 
         if (this.config.basicHeader) {
-            this.data.header = 'Solar PV';
+            this.data.header = 'SolarEdge';
         }
 
         var self = this;
@@ -45,7 +47,7 @@ Module.register("MMM-SolarEdge",{
 
     //Contact node helper for solar data
     getSolarData: function() {
-        Log.info("SolarApp: getting data");
+        Log.info("SolarEdge: getting data");
 
         this.sendSocketNotification("GET_SOLAR", {
             config: this.config
@@ -55,14 +57,13 @@ Module.register("MMM-SolarEdge",{
     //Handle node helper response
     socketNotificationReceived: function(notification, payload) {
       	if (notification === "SOLAR_DATA") {
+            //{"overview":{"lastUpdateTime":"2019-03-10 16:54:51","lifeTimeData":{"energy":38513.0},"lastYearData":{"energy":38376.0},"lastMonthData":{"energy":38376.0},"lastDayData":{"energy":18138.0},"currentPower":{"power":833.86755},"measuredBy":"INVERTER"}}
+            this.results[0] = payload.overview.currentPower.power.toFixed(2);
+            this.results[1] = payload.overview.lastDayData.energy.toFixed(2);
+  		    this.results[2] = (payload.overview.lastMonthData.energy / 1000).toFixed(2);
+            this.results[3] = (payload.overview.lastYearData.energy / 1000).toFixed(1);
+  		    this.results[4] = (payload.overview.lifeTimeData.energy / 1000).toFixed(1);
 
-            this.results[0] = payload.current_power;
-  		      this.results[1] = (payload.energy_today / 1000).toFixed(2);
-            this.results[2] = (payload.energy_lifetime / 1000000).toFixed(1);
-  		      this.results[3] = payload.modules;
-
-            var statusNew = payload.status.charAt(0).toUpperCase() + payload.status.slice(1);
-  		      this.results[4] = statusNew;
             this.loaded = true;
           	this.updateDom(1000);
         }
@@ -72,10 +73,10 @@ Module.register("MMM-SolarEdge",{
     getDom: function() {
 
         var wrapper = document.createElement("div");
-	if (this.config.apiKey === "" || this.config.userId === "" || this.config.systemId === "") {
-	    wrapper.innerHTML = "Missing configuration.";
-	    return wrapper;
-	}
+        if (this.config.apiKey === "" || this.config.userId === "" || this.config.systemId === "") {
+            wrapper.innerHTML = "Missing configuration.";
+            return wrapper;
+        }
 
         //Display loading while waiting for API response
         if (!this.loaded) {
@@ -91,7 +92,7 @@ Module.register("MMM-SolarEdge",{
             img.src = "/modules/MMM-SolarEdge/solar_white.png";
 
             var sTitle = document.createElement("p");
-            sTitle.innerHTML = "Solar PV";
+            sTitle.innerHTML = "SolarEdge";
             sTitle.className += " thin normal";
             imgDiv.appendChild(img);
     	      imgDiv.appendChild(sTitle);
