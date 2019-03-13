@@ -23,7 +23,7 @@ A Solar Module for MagicMirror2 designed to integrate with an SolarEdge inverter
 **Note:** Only enter your API Key in the `config.js` file. Your API Key is yours alone, _do not_ post or use it elsewhere.
 
 ## Sample
-![alt text](https://github.com/chrwei/MMM-SolarEdge-Moni/blob/master/AppSample.PNG "Example")
+![alt text](https://github.com/chrwei/MMM-SolarEdge/blob/master/AppSample.PNG "Example")
 
 ## Optional Config
 | **Option** | **Description** |
@@ -36,4 +36,3 @@ Use of this module requires
   2. The Site ID of the solar system you wish to monitor, which can also be found in the Monitoring Portal.
 
 ## Attribution
-
