@@ -14,7 +14,8 @@ hr {
 td {
 	padding: 0px 5px 0px 0px;
 }
-#attribution {
-	font-size: 20px;
-	margin: 0px;
+.solarfont {
+    font-size: 25px;
+    line-height: 30px;
+    text-align: right;
 }

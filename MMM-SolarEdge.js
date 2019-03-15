@@ -110,8 +110,8 @@ Module.register("MMM-SolarEdge",{
         		titleTr.innerHTML = this.titles[i];
         		dataTr.innerHTML = this.results[i] + " " + this.suffixes[i];
 
-        		titleTr.className += " medium regular bright";
-        		dataTr.classname += " medium light normal";
+        		titleTr.className += " solarfont regular bright";
+        		dataTr.className += " solarfont light normal ";
 
         		row.appendChild(titleTr);
         		row.appendChild(dataTr);
@@ -119,13 +119,6 @@ Module.register("MMM-SolarEdge",{
         		tb.appendChild(row);
       	}
         wrapper.appendChild(tb);
-
-        //Enphase API attribution requirements
-        var attrib = document.createElement("p");
-        attrib.innerHTML = "Powered by SolarEdge Monitoring";
-	      attrib.id = "attribution";
-	      attrib.className += "light";
-        wrapper.appendChild(attrib);
 
         return wrapper;
     }
