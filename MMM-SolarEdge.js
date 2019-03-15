@@ -88,15 +88,16 @@ Module.register("MMM-SolarEdge",{
             var imgDiv = document.createElement("div");
             var img = document.createElement("img");
             img.src = "/modules/MMM-SolarEdge/solar_white.png";
+            img.className += " solarimg";
 
             var sTitle = document.createElement("p");
             sTitle.innerHTML = "SolarEdge";
-            sTitle.className += " thin normal";
+            sTitle.className += " solartitle thin normal";
             imgDiv.appendChild(img);
-    	      imgDiv.appendChild(sTitle);
+    	    imgDiv.appendChild(sTitle);
 
             var divider = document.createElement("hr");
-            divider.className += " dimmed";
+            divider.className += " solarhr dimmed";
             wrapper.appendChild(imgDiv);
             wrapper.appendChild(divider);
         }
@@ -110,8 +111,8 @@ Module.register("MMM-SolarEdge",{
         		titleTr.innerHTML = this.titles[i];
         		dataTr.innerHTML = this.results[i] + " " + this.suffixes[i];
 
-        		titleTr.className += " solarfont regular bright";
-        		dataTr.className += " solarfont light normal ";
+        		titleTr.className += " solartd regular bright";
+        		dataTr.className += " solartd light normal ";
 
         		row.appendChild(titleTr);
         		row.appendChild(dataTr);
