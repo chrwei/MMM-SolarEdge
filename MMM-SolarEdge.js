@@ -59,8 +59,8 @@ Module.register("MMM-SolarEdge",{
 			this.results[0] = payload.overview.currentPower.power.toFixed(2);
 			this.results[1] = (payload.overview.lastDayData.energy / 1000).toFixed(2);
 			this.results[2] = (payload.overview.lastMonthData.energy / 1000).toFixed(2);
-			this.results[3] = (payload.overview.lastYearData.energy / 1000).toFixed(1);
-			this.results[4] = (payload.overview.lifeTimeData.energy / 1000).toFixed(1);
+			this.results[3] = (payload.overview.lastYearData.energy / 100000).toFixed(1);
+			this.results[4] = (payload.overview.lifeTimeData.energy / 100000).toFixed(1);
 
 			this.loaded = true;
 			this.updateDom(1000);
